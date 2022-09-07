@@ -24,3 +24,27 @@
       
   Scenario: Request with json file
     When user sends a "POST" request to "api/users" url with the json file "TestData\User.json"
+
+  Scenario: Unsuccessfull registration
+    Given user creates a "POST" request to "api/register" url with the json:
+    """
+    {
+    "email": "sydney@fife"
+    }
+    """
+    And expected response status code is "400"
+    When user sends request
+    Then response json path "$['error']" value should be "["Missing password"]"
+    
+    
+
+
+  Scenario: Update users info
+    Given user creates a "PUT" request to "api/users/2" url with the json:
+    """
+    {
+    "name": "morpheus",
+    "job": "zion resident"
+    }
+    """
+    Then response time is less then "200" millis
